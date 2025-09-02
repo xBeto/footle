@@ -120,3 +120,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom styles for FOOTLE homepage */
+.homepage-background {
+  background-image: url('/bg2.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+/* Ensure perfect fit on all screen sizes including ultrawide */
+@media (min-width: 1920px) {
+  .homepage-background {
+    background-size: 100% 100%;
+  }
+}
+
+/* For very wide screens (ultrawide) */
+@media (min-width: 2560px) {
+  .homepage-background {
+    background-size: cover;
+    background-position: center top;
+  }
+}
