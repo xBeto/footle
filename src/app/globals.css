@@ -117,13 +117,13 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[#11100d] text-foreground;
   }
 }
 
 /* Custom styles for FOOTLE homepage */
 .homepage-background {
-  background-image: url('/bg2.png');
+  background-image: url('/background.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

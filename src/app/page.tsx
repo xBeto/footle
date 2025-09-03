@@ -5,7 +5,7 @@ export default function Home() {
     <div className="min-h-screen relative overflow-hidden homepage-background">
       <div className="relative z-10 flex justify-center pt-8">
         <Image
-          src="/logofootle1.png"
+          src="/logo.png"
           alt="FOOTLE Logo"
           width={250}
           height={100}

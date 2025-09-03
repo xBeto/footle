@@ -7,8 +7,8 @@ const myFont = localFont({
 })
 
 export const metadata: Metadata = {
-  title: "FOOTLE",
-  description: "FOOTLE - Your football experience",
+  title: "Footle",
+  description: "Guess the daily Footballer with clues revealed after each try!",
 };
 
 export default function RootLayout({
