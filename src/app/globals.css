@@ -121,6 +121,23 @@
   }
 }
 
+/* Global, gentle fluid scaling for larger screens */
+html {
+  font-size: 16px;
+}
+
+@media (min-width: 1536px) {
+  html { font-size: 17px; }
+}
+
+@media (min-width: 1920px) {
+  html { font-size: 18.5px; }
+}
+
+@media (min-width: 2560px) {
+  html { font-size: 20px; }
+}
+
 /* Custom styles for FOOTLE homepage */
 .homepage-background {
   background-image: url('/background.png');
