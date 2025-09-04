@@ -1,5 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Dialog, DialogTrigger } from "@/components/FootleDialog";
+import { FootleDialogContent } from "@/components/FootleDialog";
+import { ContactForm } from "@/components/ContactForm";
 
 type Mode = {
   href: string;
@@ -85,7 +88,7 @@ function ModeBanner({ mode }: { mode: Mode }) {
   return (
     <Link
       href={mode.href}
-      className="block w-[95%] max-w-[28rem] transition-transform duration-200 hover:-translate-y-1"
+      className="block w-[95%] max-w-[28rem] transition-transform duration-200 hover:-translate-y-1.5 hover:scale-105"
     >
       <div className="relative w-full">
         <Image
@@ -141,16 +144,65 @@ export default function Home() {
           <Link
             href="https://ko-fi.com/footle"
             target="_blank"
-            className="transition-transform hover:scale-105 mb-4"
+            className="transition-transform hover:scale-110 mb-4"
           >
             <Image src="/kofi.png" alt="Ko-fi" width={128} height={128} />
           </Link>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+        <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
           <span>footle.xyz .... {new Date().getFullYear()}</span>
-          <button className="transition-transform hover:scale-105">Contact</button>
+
+          {/* Contact Dialog */}
+          <Dialog>
+            <DialogTrigger className="transition-transform hover:scale-105 underline/20">
+              Contact
+            </DialogTrigger>
+            <FootleDialogContent title="Contact">
+              <ContactForm />
+            </FootleDialogContent>
+          </Dialog>
+
           <Link href="/privacy" className="transition-transform hover:scale-105">Privacy Policy</Link>
-          <button className="transition-transform hover:scale-105">About</button>
+
+          {/* About Dialog */}
+          <Dialog>
+            <DialogTrigger className="transition-transform hover:scale-105 underline/20">
+              About
+            </DialogTrigger>
+            <FootleDialogContent title="About Footle">
+              <div className="space-y-4 text-left">
+                <p className="text-white/90">
+                  Guess a different footballer every day!
+                </p>
+                <p className="text-white/80">
+                  This content is not affiliated with endorsed sponsored or specifically approved by Electronic Arts and EA is not responsible for it. For more information see EA's
+                  {" "}
+                  <a
+                    href="https://help.ea.com/en/articles/security-and-rules/ea-content-policy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#f0d36c] underline/30"
+                  >
+                    Content Policy
+                  </a>
+                  .
+                </p>
+                <p className="text-white/80">
+                  Footle is greatly inspired by Wordle and
+                  {" "}
+                  <a
+                    href="https://loldle.net/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#f0d36c] underline/30"
+                  >
+                    Loldle
+                  </a>
+                  .
+                </p>
+              </div>
+            </FootleDialogContent>
+          </Dialog>
         </div>
       </footer>
     </div>
