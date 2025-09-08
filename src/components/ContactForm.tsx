@@ -29,7 +29,6 @@ export function ContactForm({ className }: { className?: string }) {
     // Placeholder: integrate with resend.com later
     // For now, emulate submit
     // eslint-disable-next-line no-console
-    console.log({ email, type, message })
     setSubmitted(true)
     setTimeout(() => setSubmitted(false), 3000)
     setEmail("")

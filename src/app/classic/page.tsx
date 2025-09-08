@@ -49,8 +49,6 @@ export default function ClassicPage() {
     if (!target) return;
     console.groupCollapsed("[Footle][Classic] evaluateGuess", { guessId: guess.id, guessName: guess.fullname });
     try {
-      console.log("target:", target);
-      console.log("incoming guess:", guess);
 
       const birthYearTarget = new Date(target.birthdate).getFullYear();
       const birthYearGuess = new Date(guess.birthdate).getFullYear();
@@ -59,8 +57,6 @@ export default function ClassicPage() {
       const withinOne = (n: number) => Math.abs(n) === 1;
 
       const colorFor = (match: boolean, close: boolean): "green" | "orange" | "red" => match ? "green" : close ? "orange" : "red";
-
-      console.log("computed diffs:", { ratingDiff, yearDiff, birthYearTarget, birthYearGuess });
 
       setRows((prev) => {
         const nextRow = {
@@ -83,8 +79,6 @@ export default function ClassicPage() {
           },
         } as const;
         const next = [nextRow, ...prev];
-        console.log("next row:", nextRow);
-        console.log("rows ->", next);
         return next;
       });
 
@@ -103,7 +97,6 @@ export default function ClassicPage() {
         guess.rating === target.rating &&
         new Date(guess.birthdate).getFullYear() === new Date(target.birthdate).getFullYear()
       );
-      console.log("isSolved:", isSolved);
       if (isSolved) {
         setSolved(true);
         setProgress((prev) => ({ ...prev, classic: "solved" }));
