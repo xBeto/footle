@@ -6,6 +6,7 @@ import { Dialog, DialogTrigger } from "@/components/FootleDialog";
 import { FootleDialogContent } from "@/components/FootleDialog";
 import { ContactForm } from "@/components/ContactForm";
 import "./globals.css";
+import { DailyProvider } from "@/components/DailyProvider";
 
 const myFont = localFont({
   src: '../../public/fonts/fifafont.otf',
@@ -30,7 +31,7 @@ export default function RootLayout({
       <body>
         <div className="min-h-screen relative overflow-hidden homepage-background">
           {/* Header */}
-          <header className="relative z-10 flex items-start justify-center pt-6 sm:pt-8">
+          <header className="relative z-10 mb-6 flex items-start justify-center pt-6 sm:pt-8">
             <Link href="/">
               <Image
                 src="/logo.png"
@@ -44,9 +45,11 @@ export default function RootLayout({
           </header>
 
           {/* Main Content */}
-          <main className="relative z-10">
-            {children}
-          </main>
+          <DailyProvider>
+            <main className="relative z-10">
+              {children}
+            </main>
+          </DailyProvider>
 
           {/* Footer */}
           <footer className="relative z-10 mt-8 sm:mt-12 mb-4 flex flex-col items-center text-center text-white/90">

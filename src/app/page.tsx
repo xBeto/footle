@@ -115,7 +115,7 @@ function ModeBanner({ mode }: { mode: Mode }) {
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center gap-4 sm:gap-5 mt-10">
+    <div className="flex flex-col items-center gap-4 sm:gap-5">
       {MODES.map((m) => (
         <ModeBanner key={m.title} mode={m} />
       ))}
