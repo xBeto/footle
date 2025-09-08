@@ -11,6 +11,7 @@ import type { Footballer } from "@/types/database";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Success from "@/components/Success";
 import { readJson, writeJson, storageKeys } from "@/utils/storage";
+import Realistic from "react-canvas-confetti/dist/presets/realistic";
 
 export default function ClassicPage() {
   const { challenges, setProgress } = useDaily();
@@ -167,6 +168,7 @@ export default function ClassicPage() {
 
       {solved ? (
         <div className="mt-6 w-full" ref={successRef}>
+          <Realistic autorun={{ speed: 0.8, duration: 2000 }}/>
           <Success attempts={rows.length} onShare={onShare} />
         </div>
       ) : null}
