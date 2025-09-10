@@ -84,7 +84,7 @@ export default function SearchBar({ placeholder = "Search any player...", onSele
         </button>
       </div>
       {open && results.length > 0 && (
-        <div className="absolute z-20 mt-2 w-full max-h-64 overflow-auto rounded-md bg-[#0a141c] border border-white/10 shadow-xl">
+        <div className="relative z-20 mt-2 w-full max-h-40 overflow-auto rounded-md bg-[#0a141c] border border-white/10 shadow-xl">
           {results.map((f) => (
             <button
               key={f.id}

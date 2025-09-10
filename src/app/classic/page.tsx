@@ -51,10 +51,13 @@ export default function ClassicPage() {
     console.groupCollapsed("[Footle][Classic] evaluateGuess", { guessId: guess.id, guessName: guess.fullname });
     try {
 
+      const now = new Date();
       const birthYearTarget = new Date(target.birthdate).getFullYear();
       const birthYearGuess = new Date(guess.birthdate).getFullYear();
+      const ageTarget = now.getFullYear() - birthYearTarget;
+      const ageGuess = now.getFullYear() - birthYearGuess;
       const ratingDiff = guess.rating - target.rating;
-      const yearDiff = birthYearGuess - birthYearTarget;
+      const ageDiff = ageGuess - ageTarget;
       const withinOne = (n: number) => Math.abs(n) === 1;
 
       const colorFor = (match: boolean, close: boolean): "green" | "orange" | "red" => match ? "green" : close ? "orange" : "red";
@@ -72,10 +75,10 @@ export default function ClassicPage() {
               color: colorFor(guess.rating === target.rating, withinOne(ratingDiff)),
               arrow: guess.rating === target.rating ? undefined : ratingDiff < 0 ? "up" : "down",
             },
-            birthyear: {
-              value: birthYearGuess,
-              color: colorFor(birthYearGuess === birthYearTarget, withinOne(yearDiff)),
-              arrow: birthYearGuess === birthYearTarget ? undefined : yearDiff < 0 ? "up" : "down",
+            age: {
+              value: ageGuess,
+              color: colorFor(ageGuess === ageTarget, withinOne(ageDiff)),
+              arrow: ageGuess === ageTarget ? undefined : ageDiff < 0 ? "up" : "down",
             },
           },
         } as const;
@@ -96,7 +99,7 @@ export default function ClassicPage() {
         guess.club === target.club &&
         guess.league === target.league &&
         guess.rating === target.rating &&
-        new Date(guess.birthdate).getFullYear() === new Date(target.birthdate).getFullYear()
+        (new Date().getFullYear() - new Date(guess.birthdate).getFullYear()) === (new Date().getFullYear() - new Date(target.birthdate).getFullYear())
       );
       if (isSolved) {
         setSolved(true);
@@ -127,7 +130,7 @@ export default function ClassicPage() {
   const onShare = useCallback(() => {
     const toEmoji = (color: "green" | "orange" | "red") => (color === "green" ? "🟩" : color === "orange" ? "🟧" : "🟥");
     const lines = rows.map((r) => {
-      const order: (keyof typeof r.cells)[] = ["position", "nationality", "club", "league", "rating", "birthyear"];
+      const order: (keyof typeof r.cells)[] = ["position", "nationality", "club", "league", "rating", "age"];
       return order.map((k) => toEmoji(r.cells[k].color)).join("");
     });
     const header = `Footle Classic ${solved ? rows.length : 'X'}/${"?"}`;
@@ -139,7 +142,7 @@ export default function ClassicPage() {
   }, [rows, solved]);
 
   return (
-    <div className="flex flex-col items-center min-h-[60vh] px-4">
+    <div className="flex flex-col items-center min-h-[60vh] px-2">
       <div className="w-full">
         <DailyProgress />
       </div>
@@ -168,7 +171,7 @@ export default function ClassicPage() {
 
       {solved ? (
         <div className="mt-6 w-full" ref={successRef}>
-          <Realistic autorun={{ speed: 0.8, duration: 2000 }}/>
+          <Realistic autorun={{ speed: 0.8, duration: 2000 }} />
           <Success attempts={rows.length} onShare={onShare} />
         </div>
       ) : null}

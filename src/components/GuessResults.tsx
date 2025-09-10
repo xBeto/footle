@@ -3,7 +3,7 @@
 import React from "react";
 import type { Footballer } from "@/types/database";
 
-export type ColumnKey = "position" | "nationality" | "club" | "league" | "rating" | "birthyear";
+export type ColumnKey = "position" | "nationality" | "club" | "league" | "rating" | "age";
 
 export type CellResult = {
   value: string | number;
@@ -22,51 +22,68 @@ type GuessResultsProps = {
 };
 
 const headers: { key: ColumnKey | "footballer"; label: string }[] = [
-  { key: "footballer", label: "Footballer" },
+  { key: "footballer", label: "Avatar" },
   { key: "position", label: "Position" },
-  { key: "nationality", label: "Nationality" },
+  { key: "nationality", label: "Country" },
   { key: "club", label: "Club" },
   { key: "league", label: "League" },
   { key: "rating", label: "Rating" },
-  { key: "birthyear", label: "Birth Year" },
+  { key: "age", label: "Age" },
 ];
 
 function colorClass(c: CellResult["color"]): string {
-  if (c === "green") return "bg-emerald-600/70 border-emerald-500";
-  if (c === "orange") return "bg-orange-600/70 border-orange-500";
-  return "bg-red-600/70 border-red-500";
+  if (c === "green") return "bg-[#17d419]/90 border-[0.8px] border-white/80";
+  if (c === "orange") return "bg-orange-500/90 border-[0.8px] border-white/80";
+  return "bg-red-600/90 border-[0.8px] border-white/80";
 }
 
 export default function GuessResults({ rows, variant = "advanced" }: GuessResultsProps) {
   return (
-    <div className="w-full max-w-5xl mx-auto">
+    <div className="max-w-min mx-auto">
       <div className="overflow-x-auto">
-        <div className="min-w-[720px]">
-          <div className="sticky top-0 z-10 bg-[#0a141c]/80 backdrop-blur border border-white/10 rounded-t-xl">
-            <div className="flex text-white/80 text-xs sm:text-sm font-medium px-2 py-2" style={{ gap: "0.5rem" }}>
-              {headers.map((h) => (
-                <div key={h.key} className={h.key === "footballer" ? "w-20" : "w-24"}>
-                  {h.label}
-                </div>
-              ))}
-            </div>
+        <div className="min-w-[520px] sm:min-w-[760px]">
+          <div className="flex text-white text-xs sm:text-sm font-medium py-1 gap-[0.2rem] sm:gap-2 sm:justify-between">
+            {headers.map((h) => (
+              <div key={h.key} className={h.key === "footballer" ? "w-16 sm:w-24 text-center" : "w-16 sm:w-24 text-center"}>
+                {h.label}
+              </div>
+            ))}
           </div>
-          <div className="border-x border-b border-white/10 rounded-b-xl divide-y divide-white/10">
+          <div className="flex items-center gap-[0.2rem] sm:gap-2 sm:justify-between mb-2">
+            {headers.map((h) => (
+              <div key={`${h.key}-underline`} className={h.key === "footballer" ? "w-16 sm:w-24" : "w-16 sm:w-24"}>
+                <div className="h-0.5 sm:h-1 w-full bg-white" />
+              </div>
+            ))}
+          </div>
+          <div>
             {rows.map((row) => (
-              <div key={row.footballer.id} className="flex items-center px-2 py-2 text-white/90" style={{ gap: "0.5rem" }}>
-                <div className="w-20 flex items-center justify-center">
-                  <img src={row.footballer.avatar} alt={row.footballer.fullname} className="w-12 h-12 rounded object-cover border border-white/10" />
+              <div key={row.footballer.id} className="flex items-center sm:justify-between py-1 text-white/90 gap-[0.2rem] sm:gap-2">
+                <div className="w-16 sm:w-24 flex items-center justify-center">
+                  <img src={row.footballer.avatar} alt={row.footballer.fullname} className="w-16 h-16 sm:w-24 sm:h-24 object-cover" />
                 </div>
                 {(headers.filter(h => h.key !== "footballer") as { key: ColumnKey; label: string }[]).map(({ key }) => {
                   const cell = row.cells[key];
-                  const arrow = cell.arrow === "up" ? "↑" : cell.arrow === "down" ? "↓" : "";
                   const isImage = typeof cell.value === "string" && /^https?:\/\//.test(cell.value as string);
                   return (
-                    <div key={key} className={`w-24 h-16 flex items-center justify-center text-center text-xs sm:text-sm border ${colorClass(cell.color)} rounded-md px-2`}> 
+                    <div key={key} className={`relative w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center text-center text-[12px] sm:text-base ${colorClass(cell.color)} rounded-md p-1`}> 
                       {isImage ? (
-                        <img src={String(cell.value)} alt={String(key)} className="w-10 h-10 object-contain" />
+                        <img src={String(cell.value)} alt={String(key)} className="w-8 h-8 sm:w-12 sm:h-12 object-contain" />
                       ) : (
-                        <span className="whitespace-nowrap">{String(cell.value)} {arrow}</span>
+                        <>
+                          {cell.arrow ? (
+                            <svg aria-hidden className="absolute inset-0 m-auto opacity-50" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
+                              {cell.arrow === "up" ? (
+                                <polygon points="50,12 80,48 62,48 62,88 38,88 38,48 20,48" fill="rgba(0,0,0,0.55)" />
+                              ) : (
+                                <polygon points="50,88 80,52 62,52 62,12 38,12 38,52 20,52" fill="rgba(0,0,0,0.55)" />
+                              )}
+                            </svg>
+                          ) : null}
+                          <span className="relative z-10 max-w-[3.6rem] sm:max-w-[5.5rem] break-words whitespace-normal leading-tight inline-flex items-center justify-center text-white font-semibold drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]">
+                            {String(cell.value)}
+                          </span>
+                        </>
                       )}
                     </div>
                   );

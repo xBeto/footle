@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Dialog, DialogTrigger } from "@/components/FootleDialog";
 import { FootleDialogContent } from "@/components/FootleDialog";
 import { ContactForm } from "@/components/ContactForm";
+import EmergencyReset from "@/components/EmergencyReset";
 import "./globals.css";
 import { DailyProvider } from "@/components/DailyProvider";
 
@@ -61,6 +62,7 @@ export default function RootLayout({
               >
                 <Image src="/kofi.png" alt="Ko-fi" width={128} height={128} />
               </Link>
+              <EmergencyReset />
             </div>
             <div className="flex flex-wrap items-center justify-center gap-3 text-sm">
               <span>footle.xyz .... {new Date().getFullYear()}</span>
