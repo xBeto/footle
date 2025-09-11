@@ -8,6 +8,7 @@ import { ContactForm } from "@/components/ContactForm";
 import EmergencyReset from "@/components/EmergencyReset";
 import "./globals.css";
 import { DailyProvider } from "@/components/DailyProvider";
+import background from "../../public/background.png";
 
 const myFont = localFont({
   src: '../../public/fonts/fifafont.otf',
@@ -30,7 +31,17 @@ export default function RootLayout({
               crossOrigin="anonymous"></script>
       </head>
       <body>
-        <div className="min-h-screen relative overflow-hidden homepage-background">
+        <div className="min-h-screen relative overflow-hidden">
+          <Image
+            src={background}
+            alt="Football themed background"
+            fill
+            priority
+            placeholder="blur"
+            sizes="100vw"
+            className="object-cover pointer-events-none select-none"
+            aria-hidden
+          />
           {/* Header */}
           <header className="relative z-10 mb-6 flex items-start justify-center pt-6 sm:pt-8">
             <Link href="/">

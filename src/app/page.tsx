@@ -52,6 +52,7 @@ function ModeBanner({ mode }: { mode: Mode }) {
             height={400}
             className="w-full h-auto select-none"
             priority={mode.title === "Classic"}
+            sizes="(max-width: 640px) 95vw, 28rem"
           />
 
           {/* Lock icon in top-right */}
@@ -95,6 +96,7 @@ function ModeBanner({ mode }: { mode: Mode }) {
           height={400}
           className="w-full h-auto select-none"
           priority={mode.title === "Classic"}
+          sizes="(max-width: 640px) 95vw, 28rem"
         />
 
         <div
