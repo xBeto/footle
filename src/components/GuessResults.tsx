@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import type { Footballer } from "@/types/database";
 
 export type ColumnKey = "position" | "nationality" | "club" | "league" | "rating" | "age";
@@ -60,7 +61,16 @@ export default function GuessResults({ rows, variant = "advanced" }: GuessResult
             {rows.map((row) => (
               <div key={row.footballer.id} className="flex items-center sm:justify-between py-1 text-white/90 gap-[0.2rem] sm:gap-2">
                 <div className="w-16 sm:w-24 flex items-center justify-center">
-                  <img src={row.footballer.avatar} alt={row.footballer.fullname} className="w-16 h-16 sm:w-24 sm:h-24 object-cover" />
+                  <div className="relative w-16 h-16 sm:w-24 sm:h-24">
+                    <Image
+                      src={row.footballer.avatar}
+                      alt={row.footballer.fullname}
+                      fill
+                      className="object-cover rounded"
+                      sizes="(max-width: 640px) 4rem, 6rem"
+                      unoptimized
+                    />
+                  </div>
                 </div>
                 {(headers.filter(h => h.key !== "footballer") as { key: ColumnKey; label: string }[]).map(({ key }) => {
                   const cell = row.cells[key];
@@ -68,7 +78,16 @@ export default function GuessResults({ rows, variant = "advanced" }: GuessResult
                   return (
                     <div key={key} className={`relative w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center text-center text-[12px] sm:text-base ${colorClass(cell.color)} rounded-md p-1`}> 
                       {isImage ? (
-                        <img src={String(cell.value)} alt={String(key)} className="w-8 h-8 sm:w-12 sm:h-12 object-contain" />
+                        <div className="relative w-8 h-8 sm:w-12 sm:h-12">
+                          <Image
+                            src={String(cell.value)}
+                            alt={String(key)}
+                            fill
+                            className="object-contain"
+                            sizes="(max-width: 640px) 2rem, 3rem"
+                            unoptimized
+                          />
+                        </div>
                       ) : (
                         <>
                           {cell.arrow ? (

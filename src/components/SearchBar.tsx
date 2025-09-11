@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { searchFootballers } from "@/lib/data";
 import type { Footballer } from "@/types/database";
 
@@ -92,7 +93,18 @@ export default function SearchBar({ placeholder = "Search any player...", onSele
               onClick={() => handleSelect(f)}
               className="w-full text-left px-3 py-2 hover:bg-white/10 flex items-center gap-3 text-white/90"
             >
-              <img src={f.avatar} alt={f.fullname} className="w-8 h-8 rounded object-cover border border-white/10" />
+              <span className="relative w-8 h-8 rounded overflow-hidden">
+                <Image
+                  src={f.avatar}
+                  alt={f.fullname}
+                  fill
+                  className="object-cover"
+                  sizes="2rem"
+                  unoptimized
+                  priority
+                  fetchPriority="high"
+                />
+              </span>
               <span className="text-sm">{f.fullname}</span>
             </button>
           ))}

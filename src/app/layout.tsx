@@ -31,7 +31,7 @@ export default function RootLayout({
               crossOrigin="anonymous"></script>
       </head>
       <body>
-        <div className="min-h-screen relative overflow-hidden">
+        <div className="fixed inset-0 -z-10 pointer-events-none select-none">
           <Image
             src={background}
             alt="Football themed background"
@@ -39,9 +39,11 @@ export default function RootLayout({
             priority
             placeholder="blur"
             sizes="100vw"
-            className="object-cover pointer-events-none select-none"
+            className="object-cover"
             aria-hidden
           />
+        </div>
+        <div className="min-h-screen relative overflow-hidden">
           {/* Header */}
           <header className="relative z-10 mb-6 flex items-start justify-center pt-6 sm:pt-8">
             <Link href="/">
@@ -52,6 +54,7 @@ export default function RootLayout({
                 height={120}
                 className="w-[200px] h-auto sm:w-[260px] drop-shadow-[0_6px_18px_rgba(0,0,0,0.8)] transition-transform hover:scale-105"
                 priority
+                sizes="(max-width: 640px) 200px, 260px"
               />
             </Link>
           </header>
@@ -71,7 +74,7 @@ export default function RootLayout({
                 target="_blank"
                 className="transition-transform hover:scale-110 mb-4"
               >
-                <Image src="/kofi.png" alt="Ko-fi" width={128} height={128} />
+                <Image src="/kofi.png" alt="Ko-fi" width={128} height={128} sizes="128px" />
               </Link>
               <EmergencyReset />
             </div>

@@ -43,7 +43,15 @@ export function DailyProgress() {
             return (
               <div key={mode.key} className="flex flex-col items-center min-w-16">
                 <Link href={mode.href} className={`p-2 ${isActive ? "" : "opacity-50"}`}>
-                  <Image src={mode.iconSrc} alt={mode.name} width={56} height={56} className={`w-14 h-14 ${isActive ? "scale-120" : ""}`} />
+                  <Image
+                    src={mode.iconSrc}
+                    alt={mode.name}
+                    width={56}
+                    height={56}
+                    className={`w-14 h-14 ${isActive ? "scale-120" : ""}`}
+                    sizes="56px"
+                    priority={mode.key === "classic"}
+                  />
                 </Link>
                 <span className="mt-2 text-xs text-center">{mode.name}</span>
               </div>
