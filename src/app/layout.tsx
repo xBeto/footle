@@ -27,6 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={myFont.className}>
       <head>
+      <link rel="preconnect" href="https://cdn.footle.xyz" crossOrigin="anonymous" />
+      <link rel="dns-prefetch" href="https://cdn.footle.xyz" />
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2177203441703111"
               crossOrigin="anonymous"></script>
       </head>
@@ -68,7 +70,7 @@ export default function RootLayout({
 
           {/* Footer */}
           <footer className="relative z-10 mt-8 sm:mt-12 mb-4 flex flex-col items-center text-center text-white/90">
-            <div className="flex items-center gap-3 mb-2">
+            <div className="flex gap-3 mb-2">
               <Link
                 href="https://ko-fi.com/footle"
                 target="_blank"

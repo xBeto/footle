@@ -11,9 +11,10 @@ type SearchBarProps = {
   placeholder?: string;
   onSelect: (footballer: MinimalFootballer) => void;
   buttonLabel?: string;
+  excludeIds?: number[];
 };
 
-export default function SearchBar({ placeholder = "Search any player...", onSelect, buttonLabel = "Guess" }: SearchBarProps) {
+export default function SearchBar({ placeholder = "Search any player...", onSelect, buttonLabel = "Guess", excludeIds = [] }: SearchBarProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<MinimalFootballer[]>([]);
   const [open, setOpen] = useState(false);
@@ -31,7 +32,8 @@ export default function SearchBar({ placeholder = "Search any player...", onSele
     const id = setTimeout(async () => {
       try {
         const resp = await searchFootballers(query);
-        if (!ignore) setResults(resp);
+        const filtered = excludeIds.length > 0 ? resp.filter((f) => !excludeIds.includes(f.id)) : resp;
+        if (!ignore) setResults(filtered);
       } finally {
         if (!ignore) setLoading(false);
       }
@@ -40,7 +42,7 @@ export default function SearchBar({ placeholder = "Search any player...", onSele
       ignore = true;
       clearTimeout(id);
     };
-  }, [query]);
+  }, [query, excludeIds]);
 
   // Close on outside click
   useEffect(() => {
@@ -100,9 +102,7 @@ export default function SearchBar({ placeholder = "Search any player...", onSele
                   fill
                   className="object-cover"
                   sizes="2rem"
-                  unoptimized
-                  priority
-                  fetchPriority="high"
+                  loading="eager"
                 />
               </span>
               <span className="text-sm">{f.fullname}</span>

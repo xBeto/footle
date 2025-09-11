@@ -159,7 +159,12 @@ export default function ClassicPage() {
 
       {!solved ? (
         <div className="w-full max-w-2xl mb-6">
-          <SearchBar onSelect={handleSearchSelect} placeholder="Search any footballer..." buttonLabel="Guess" />
+          <SearchBar
+            onSelect={handleSearchSelect}
+            placeholder="Search any footballer..."
+            buttonLabel="Guess"
+            excludeIds={(readJson<{ guesses: number[] }>(storageKeys.classicSession)?.guesses) ?? []}
+          />
         </div>
       ) : null}
 

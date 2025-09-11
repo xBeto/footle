@@ -33,9 +33,9 @@ const headers: { key: ColumnKey | "footballer"; label: string }[] = [
 ];
 
 function colorClass(c: CellResult["color"]): string {
-  if (c === "green") return "bg-[#17d419]/90 border-[0.8px] border-white/80";
-  if (c === "orange") return "bg-orange-500/90 border-[0.8px] border-white/80";
-  return "bg-red-600/90 border-[0.8px] border-white/80";
+  if (c === "green") return "bg-[#17d419]";
+  if (c === "orange") return "bg-orange-500";
+  return "bg-red-600";
 }
 
 export default function GuessResults({ rows, variant = "advanced" }: GuessResultsProps) {
@@ -75,8 +75,9 @@ export default function GuessResults({ rows, variant = "advanced" }: GuessResult
                 {(headers.filter(h => h.key !== "footballer") as { key: ColumnKey; label: string }[]).map(({ key }) => {
                   const cell = row.cells[key];
                   const isImage = typeof cell.value === "string" && /^https?:\/\//.test(cell.value as string);
+                  const emphasize = key === "position" || key === "rating" || key === "age";
                   return (
-                    <div key={key} className={`relative w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center text-center text-[12px] sm:text-base ${colorClass(cell.color)} rounded-md p-1`}> 
+                    <div key={key} className={`relative w-16 h-16 sm:w-24 sm:h-24 flex items-center justify-center text-center text-[12px] sm:text-[15px] ${colorClass(cell.color)} rounded-md p-1 border-[0.8px] border-white/50 hover:brightness-110 shadow-[inset_0_2px_10px_rgba(0,0,0,0.5)]`}> 
                       {isImage ? (
                         <div className="relative w-8 h-8 sm:w-12 sm:h-12">
                           <Image
@@ -99,7 +100,7 @@ export default function GuessResults({ rows, variant = "advanced" }: GuessResult
                               )}
                             </svg>
                           ) : null}
-                          <span className="relative z-10 max-w-[3.6rem] sm:max-w-[5.5rem] break-words whitespace-normal leading-tight inline-flex items-center justify-center text-white font-semibold drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]">
+                          <span className={`relative z-10 max-w-[3.6rem] sm:max-w-[5.5rem] break-words whitespace-normal leading-tight inline-flex items-center justify-center text-white font-semibold drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)] ${emphasize ? "text-xl sm:text-2xl" : ""}`}>
                             {String(cell.value)}
                           </span>
                         </>
