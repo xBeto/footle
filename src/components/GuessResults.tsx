@@ -39,6 +39,34 @@ function colorClass(c: CellResult["color"]): string {
 }
 
 export default function GuessResults({ rows, variant = "advanced" }: GuessResultsProps) {
+  // Simple variant for pixel mode - only show avatar and fullname
+  if (variant === "simple") {
+    return (
+      <div className="max-w-md mx-auto">
+        <div className="space-y-3">
+          {rows.map((row) => (
+            <div key={row.footballer.id} className="flex items-center gap-4 p-3 bg-[#111e29] border border-[#f0d36c] rounded-lg">
+              <div className="relative w-16 h-16 flex-shrink-0">
+                <Image
+                  src={row.footballer.avatar}
+                  alt={row.footballer.fullname}
+                  fill
+                  className="object-cover rounded"
+                  sizes="4rem"
+                  unoptimized
+                />
+              </div>
+              <div className="text-white font-medium text-lg">
+                {row.footballer.fullname}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Advanced variant for classic mode
   return (
     <div className="max-w-min mx-auto">
       <div className="overflow-x-auto">
