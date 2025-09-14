@@ -55,5 +55,3 @@ export function FootleDialogContent({
 }
 
 export { Dialog, DialogTrigger }
-
-

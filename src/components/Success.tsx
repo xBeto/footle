@@ -121,8 +121,8 @@ export default function Success({ attempts, target, mode, onShare }: SuccessProp
   const nextModeInfo = getNextModeInfo();
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
-      <div className="rounded-lg border border-[#17d419]/30 bg-[#17d419]/60 text-white px-6 py-6 text-center">
+    <div className="relative w-full max-w-xl mx-auto">
+      <div className="rounded-lg border border-[#17d419]/30 bg-[#17d419]/50 text-white px-6 py-6 text-center">
         <div className="text-2xl font-bold mb-2">You guessed correctly!</div>
         
         {/* Large Avatar */}
