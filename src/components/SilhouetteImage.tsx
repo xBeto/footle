@@ -36,9 +36,12 @@ export default function SilhouetteImage({
         className="w-full h-full"
         style={{ 
           filter: `grayscale(100%) brightness(${brightness}%) contrast(${contrast}%)`,
-          imageRendering: "pixelated"
+          imageRendering: "pixelated",
+          userSelect: "none",
+          pointerEvents: "none"
         }}
         unoptimized
+        draggable={false}
       />
     </div>
   );
