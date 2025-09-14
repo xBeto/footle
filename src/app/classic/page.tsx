@@ -133,7 +133,7 @@ export default function ClassicPage() {
       const order: (keyof typeof r.cells)[] = ["position", "nationality", "club", "league", "rating", "age"];
       return order.map((k) => toEmoji(r.cells[k].color)).join("");
     });
-    const header = `Footle Classic ${solved ? rows.length : 'X'}/${"?"}`;
+    const header = `Footle Classic solved in ${rows.length} tries`;
     const url = typeof window !== "undefined" ? window.location.origin + "/classic" : "footle";
     const text = `${header}\n${lines.join("\n")}\n${url}`;
     if (navigator?.clipboard?.writeText) {
@@ -174,7 +174,7 @@ export default function ClassicPage() {
         </div>
       ) : null}
 
-      {solved ? (
+      {solved && target ? (
         <div className="mt-6 w-full" ref={successRef}>
           <Realistic autorun={{ speed: 0.8, duration: 2000 }} />
           <Success attempts={rows.length} target={target} mode="classic" onShare={onShare} />
