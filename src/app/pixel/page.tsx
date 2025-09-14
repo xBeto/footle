@@ -13,6 +13,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Success from "@/components/Success";
 import { readJson, writeJson, storageKeys } from "@/utils/storage";
 import Realistic from "react-canvas-confetti/dist/presets/realistic";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
 
 export default function PixelPage() {
   const { challenges, setProgress } = useDaily();
@@ -21,6 +23,9 @@ export default function PixelPage() {
   const [rows, setRows] = useState<React.ComponentProps<typeof GuessResults>["rows"]>([]);
   const [solved, setSolved] = useState(false);
   const [pixelationLevel, setPixelationLevel] = useState(0.1); // Start very pixelated
+  const [countryRevealed, setCountryRevealed] = useState(false);
+  const [clubRevealed, setClubRevealed] = useState(false);
+  const [imagesLoaded, setImagesLoaded] = useState(false);
   const successRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -33,10 +38,54 @@ export default function PixelPage() {
     return () => { active = false; };
   }, [pixelId]);
 
+  // Preload hint images when target is loaded
+  useEffect(() => {
+    if (!target) return;
+    
+    const preloadImages = async () => {
+      const imagePromises = [];
+      
+      // Preload country flag
+      if (target.nationality) {
+        const countryImg = new window.Image();
+        countryImg.src = target.nationality;
+        imagePromises.push(new Promise((resolve, reject) => {
+          countryImg.onload = resolve;
+          countryImg.onerror = reject;
+        }));
+      }
+      
+      // Preload club logo
+      if (target.club) {
+        const clubImg = new window.Image();
+        clubImg.src = target.club;
+        imagePromises.push(new Promise((resolve, reject) => {
+          clubImg.onload = resolve;
+          clubImg.onerror = reject;
+        }));
+      }
+      
+      try {
+        await Promise.all(imagePromises);
+        setImagesLoaded(true);
+        console.log("[Pixel] Hint images preloaded");
+      } catch (error) {
+        console.warn("[Pixel] Some hint images failed to preload:", error);
+        setImagesLoaded(true); // Still set to true to show the UI
+      }
+    };
+    
+    preloadImages();
+  }, [target]);
+
   // Restore from storage when target ready
   useEffect(() => {
     if (!target) return;
-    const saved = readJson<{ guesses: number[] }>(storageKeys.pixelSession);
+    const saved = readJson<{ 
+      guesses: number[]; 
+      countryRevealed: boolean; 
+      clubRevealed: boolean; 
+    }>(storageKeys.pixelSession);
     if (!saved || !saved.guesses?.length) return;
     (async () => {
       const restored: Footballer[] = [];
@@ -45,6 +94,8 @@ export default function PixelPage() {
         if (f) restored.push(f);
       }
       restored.forEach((g) => evaluateGuess(g));
+      setCountryRevealed(saved.countryRevealed || false);
+      setClubRevealed(saved.clubRevealed || false);
     })();
   }, [target]);
 
@@ -72,9 +123,21 @@ export default function PixelPage() {
       });
 
       // persist ids
-      const existing = readJson<{ guesses: number[] }>(storageKeys.pixelSession) ?? { guesses: [] };
+      const existing = readJson<{ 
+        guesses: number[]; 
+        countryRevealed: boolean; 
+        clubRevealed: boolean; 
+      }>(storageKeys.pixelSession) ?? { 
+        guesses: [], 
+        countryRevealed: false, 
+        clubRevealed: false 
+      };
       if (!existing.guesses.includes(guess.id)) {
-        writeJson(storageKeys.pixelSession, { guesses: [...existing.guesses, guess.id] });
+        writeJson(storageKeys.pixelSession, { 
+          guesses: [...existing.guesses, guess.id],
+          countryRevealed: existing.countryRevealed,
+          clubRevealed: existing.clubRevealed
+        });
       }
 
       // Update pixelation level - make it clearer with each wrong guess
@@ -108,6 +171,40 @@ export default function PixelPage() {
       evaluateGuess(full);
     }
   }, [evaluateGuess]);
+
+  const handleRevealCountry = useCallback(() => {
+    setCountryRevealed(true);
+    const existing = readJson<{ 
+      guesses: number[]; 
+      countryRevealed: boolean; 
+      clubRevealed: boolean; 
+    }>(storageKeys.pixelSession) ?? { 
+      guesses: [], 
+      countryRevealed: false, 
+      clubRevealed: false 
+    };
+    writeJson(storageKeys.pixelSession, { 
+      ...existing,
+      countryRevealed: true
+    });
+  }, []);
+
+  const handleRevealClub = useCallback(() => {
+    setClubRevealed(true);
+    const existing = readJson<{ 
+      guesses: number[]; 
+      countryRevealed: boolean; 
+      clubRevealed: boolean; 
+    }>(storageKeys.pixelSession) ?? { 
+      guesses: [], 
+      countryRevealed: false, 
+      clubRevealed: false 
+    };
+    writeJson(storageKeys.pixelSession, { 
+      ...existing,
+      clubRevealed: true
+    });
+  }, []);
 
   const onShare = useCallback(() => {
     const lines = rows.map((r) => {
@@ -149,6 +246,76 @@ export default function PixelPage() {
               pixelationLevel={pixelationLevel}
               className="mx-auto"
             />
+            
+            {/* Hints section inside the same div */}
+            <div className="mt-4 pt-4 border-t border-white/20">
+              <h3 className="text-white text-sm font-semibold">💡 Receive Hints!</h3>
+              <div className="space-y-1.5">
+                {/* Country Hint */}
+                <div className="flex items-center justify-center gap-3 h-10">
+                  <div className="text-white/80 text-sm">
+                    Country:
+                  </div>
+                  {countryRevealed ? (
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-12 h-10">
+                        <Image
+                          src={`${target.nationality}`}
+                          alt={target.nationality}
+                          fill
+                          className="object-cover rounded-sm"
+                          unoptimized
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={handleRevealCountry}
+                        disabled={rows.length < 3}
+                        className="bg-[#f0d36c] hover:bg-[#f0d36c]/80 text-black text-xs px-3 py-1 h-auto disabled:opacity-50"
+                        size="sm"
+                      >
+                        {rows.length >= 3 ? "Reveal!" : `${3 - rows.length} more guess${3 - rows.length !== 1 ? 'es' : ''}`}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                {/* Club Hint */}
+                <div className="flex items-center justify-center gap-3 h-10">
+                  <div className="text-white/80 text-sm">
+                    Club:
+                  </div>
+                  {clubRevealed ? (
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-12 h-10">
+                        <Image
+                          src={target.club}
+                          alt={target.club}
+                          fill
+                          className="object-contain"
+                          unoptimized
+                          draggable={false}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={handleRevealClub}
+                        disabled={rows.length < 6}
+                        className="bg-[#f0d36c] hover:bg-[#f0d36c]/80 text-black text-xs px-3 py-1 h-auto disabled:opacity-50"
+                        size="sm"
+                      >
+                        {rows.length >= 6 ? "Reveal!" : `${6 - rows.length} more guess${6 - rows.length !== 1 ? 'es' : ''}`}
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       ) : !solved && !target ? (
@@ -181,7 +348,7 @@ export default function PixelPage() {
       {solved ? (
         <div className="mt-6 w-full" ref={successRef}>
           <Realistic autorun={{ speed: 0.8, duration: 2000 }} />
-          <Success attempts={rows.length} onShare={onShare} />
+          <Success attempts={rows.length} target={target} mode="pixel" onShare={onShare} />
         </div>
       ) : null}
     </div>

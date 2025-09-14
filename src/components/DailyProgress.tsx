@@ -40,18 +40,36 @@ export function DailyProgress() {
         <div className="flex items-center gap-10 justify-center py-2">
           {MODES.map((mode) => {
             const isActive = pathname === mode.href;
+            const isCompleted = mounted && progress[mode.key] === "solved";
             return (
               <div key={mode.key} className="flex flex-col items-center min-w-16">
-                <Link href={mode.href} className={`p-2 ${isActive ? "" : "opacity-50"}`}>
-                  <Image
-                    src={mode.iconSrc}
-                    alt={mode.name}
-                    width={56}
-                    height={56}
-                    className={`w-14 h-14 ${isActive ? "scale-120" : ""}`}
-                    sizes="56px"
-                    priority={mode.key === "classic"}
-                  />
+                <Link href={mode.href} className={`p-2 ${isActive || isCompleted ? "" : "hover:scale-105 transition-transform duration-200 opacity-50"}`}>
+                  <div className="relative">
+                    <Image
+                      src={mode.iconSrc}
+                      alt={mode.name}
+                      width={56}
+                      height={56}
+                      className={`w-14 h-14 ${isActive ? "scale-120" : "hover:scale-105 transition-transform duration-200"}`}
+                      sizes="56px"
+                      priority={mode.key === "classic"}
+                    />
+                    {isCompleted && (
+                      <div className="absolute -top-2.5 -right-2 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
+                        <svg
+                          className="w-4 h-4 text-white"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                    )}
+                  </div>
                 </Link>
                 <span className="mt-2 text-xs text-center">{mode.name}</span>
               </div>

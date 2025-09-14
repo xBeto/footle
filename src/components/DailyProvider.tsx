@@ -4,7 +4,7 @@ import React, { createContext, useCallback, useContext, useEffect, useMemo, useS
 import { resetIfNewDay, readJson, writeJson, storageKeys } from "@/utils/storage";
 import { getDailyChallenges } from "@/lib/data";
 
-type ModeKey = "classic" | "pixel" | "emoji" | "silhouette";
+type ModeKey = "classic" | "pixel" | "silhouette";
 
 type ChallengesByMode = Partial<Record<ModeKey, number>>; // footballerId per mode
 
@@ -39,14 +39,15 @@ export function DailyProvider({ children }: { children: React.ReactNode }) {
         setChallenges(cached);
       }
       const list = await getDailyChallenges();
+      console.log("[DailyProvider] Raw challenges:", list);
       const mapped: ChallengesByMode = {};
       for (const item of list) {
-        // Mode ids mapping: assume 1=classic, 2=pixel, 3=emoji, 4=silhouette
+        // Mode ids mapping: 1=classic, 2=pixel, 3=silhouette (temporarily using 3 for silhouette)
         if (item.mode_id === 1) mapped.classic = item.footballer_id;
         if (item.mode_id === 2) mapped.pixel = item.footballer_id;
-        if (item.mode_id === 3) mapped.emoji = item.footballer_id;
-        if (item.mode_id === 4) mapped.silhouette = item.footballer_id;
+        if (item.mode_id === 3) mapped.silhouette = item.footballer_id;
       }
+      console.log("[DailyProvider] Mapped challenges:", mapped);
       setChallenges(mapped);
       writeJson(storageKeys.dailyChallenges, mapped as any);
     } catch (err) {

@@ -82,8 +82,7 @@ export default function PixelatedImage({
         ref={canvasRef}
         width={width}
         height={height}
-        className="w-full h-full object-cover rounded-lg shadow-lg"
-        style={{ boxShadow: "rgba(0, 0, 0, 0.5) 0px 4px 12px" }}
+        className="w-full h-full"
       />
     </div>
   );

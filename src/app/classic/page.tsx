@@ -177,7 +177,7 @@ export default function ClassicPage() {
       {solved ? (
         <div className="mt-6 w-full" ref={successRef}>
           <Realistic autorun={{ speed: 0.8, duration: 2000 }} />
-          <Success attempts={rows.length} onShare={onShare} />
+          <Success attempts={rows.length} target={target} mode="classic" onShare={onShare} />
         </div>
       ) : null}
     </div>

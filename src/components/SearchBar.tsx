@@ -67,27 +67,29 @@ export default function SearchBar({ placeholder = "Search any player...", onSele
 
   return (
     <div ref={containerRef} className="relative w-full max-w-xl mx-auto">
-      <div className="flex gap-2">
-        <input
-          value={query}
-          onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
-          onFocus={() => setOpen(true)}
-          placeholder={placeholder}
-          className="flex-1 form-input px-3 py-2 rounded-md bg-white/10 border border-white/15 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#f0d36c]"
-          autoComplete="off"
-          spellCheck={false}
-        />
-        <button
-          className="px-4 py-2 rounded-md bg-[#f0d36c] text-black font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-          onClick={() => submitTop && handleSelect(submitTop)}
-          disabled={!canSubmit}
-          type="button"
-        >
-          {buttonLabel}
-        </button>
+      <div className="bg-white/10 border border-white/20 rounded-lg p-3 backdrop-blur-sm">
+        <div className="flex gap-2">
+          <input
+            value={query}
+            onChange={(e) => { setQuery(e.target.value); setOpen(true); }}
+            onFocus={() => setOpen(true)}
+            placeholder={placeholder}
+            className="flex-1 form-input px-3 py-2 rounded-md bg-white/15 border border-white/25 text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-[#f0d36c] focus:border-[#f0d36c]"
+            autoComplete="off"
+            spellCheck={false}
+          />
+          <button
+            className="px-4 py-2 rounded-md bg-[#f0d36c] text-black font-medium hover:bg-[#f0d36c]/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+            onClick={() => submitTop && handleSelect(submitTop)}
+            disabled={!canSubmit}
+            type="button"
+          >
+            {buttonLabel}
+          </button>
+        </div>
       </div>
       {open && results.length > 0 && (
-        <div className="relative z-20 mt-2 w-full max-h-40 overflow-auto rounded-md bg-[#0a141c] border border-white/10 shadow-xl">
+        <div className="relative z-20 mt-2 w-full max-h-40 overflow-auto rounded-md bg-[#0a141c] border border-white/20 shadow-lg">
           {results.map((f) => (
             <button
               key={f.id}

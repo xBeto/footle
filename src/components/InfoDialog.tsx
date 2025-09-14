@@ -14,7 +14,7 @@ export default function InfoDialog({ title, children, triggerLabel = "How it wor
   const [open, setOpen] = useState(false);
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger className="px-3 py-2 rounded-md border border-white/15 text-white/90 bg-white/5 hover:bg-white/10 transition-colors text-sm">
+      <DialogTrigger className="px-4 py-2 rounded-lg border border-white/25 text-white bg-white/10 hover:bg-white/15 transition-colors text-sm font-medium backdrop-blur-sm">
         {triggerLabel}
       </DialogTrigger>
       <FootleDialogContent title={title}>
