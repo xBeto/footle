@@ -345,7 +345,7 @@ export default function PixelPage() {
         </div>
       ) : null}
 
-      {solved ? (
+      {solved && target ? (
         <div className="mt-6 w-full" ref={successRef}>
           <Realistic autorun={{ speed: 0.8, duration: 2000 }} />
           <Success attempts={rows.length} target={target} mode="pixel" onShare={onShare} />
