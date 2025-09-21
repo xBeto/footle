@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Image from "next/image";
 import Link from "next/link";
+import Script from "next/script";
 import { Dialog, DialogTrigger } from "@/components/FootleDialog";
 import { FootleDialogContent } from "@/components/FootleDialog";
 import { ContactForm } from "@/components/ContactForm";
@@ -27,22 +28,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={myFont.className}>
       <head>
-      {/* Google tag (gtag.js) */}
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZBZKR1GT1"></script>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-FZBZKR1GT1');
-          `,
-        }}
-      />
       <link rel="preconnect" href="https://cdn.footle.xyz" crossOrigin="anonymous" />
       <link rel="dns-prefetch" href="https://cdn.footle.xyz" />
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2177203441703111"
-              crossOrigin="anonymous"></script>
       </head>
       <body>
         <div className="fixed inset-0 -z-10 pointer-events-none select-none">
@@ -149,6 +136,27 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-FZBZKR1GT1"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-FZBZKR1GT1');
+          `}
+        </Script>
+
+        {/* Google AdSense */}
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2177203441703111"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );
