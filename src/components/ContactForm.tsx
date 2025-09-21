@@ -19,21 +19,47 @@ export function ContactForm({ className }: { className?: string }) {
   const [type, setType] = React.useState<string>("")
   const [message, setMessage] = React.useState("")
   const [submitted, setSubmitted] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
 
   const isEmailValid = /.+@.+\..+/.test(email)
   const canSubmit = isEmailValid && type !== "" && message.trim().length >= 8
 
-  function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!canSubmit) return
-    // Placeholder: integrate with resend.com later
-    // For now, emulate submit
-    // eslint-disable-next-line no-console
-    setSubmitted(true)
-    setTimeout(() => setSubmitted(false), 3000)
-    setEmail("")
-    setType("")
-    setMessage("")
+    if (!canSubmit || isLoading) return
+
+    setIsLoading(true)
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          type,
+          message,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (response.ok) {
+        setSubmitted(true)
+        setTimeout(() => setSubmitted(false), 3000)
+        setEmail("")
+        setType("")
+        setMessage("")
+      } else {
+        console.error('Error sending email:', result.error)
+        alert('Failed to send message. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error sending email:', error)
+      alert('Failed to send message. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -80,10 +106,10 @@ export function ContactForm({ className }: { className?: string }) {
 
       <button
         type="submit"
-        disabled={!canSubmit}
+        disabled={!canSubmit || isLoading}
         className="disabled:opacity-60 disabled:cursor-not-allowed inline-flex items-center justify-center rounded-md bg-[#f0d36c] px-4 py-2 text-black font-semibold shadow-sm transition hover:brightness-95"
       >
-        {submitted ? "Sent!" : "Send"}
+        {isLoading ? "Sending..." : submitted ? "Sent!" : "Send"}
       </button>
     </form>
   )
