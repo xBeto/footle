@@ -140,3 +140,45 @@ html {
 
 /* Custom styles for FOOTLE homepage */
 /* Background now rendered via Next/Image in layout */
+
+/* Custom Toast Styles for Footle */
+.footle-toast {
+  background: #111e29 !important;
+  color: #ffffff !important;
+  border: 1px solid #f0d36c !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3) !important;
+}
+
+.footle-toast [data-sonner-toast] {
+  background: #111e29 !important;
+  color: #ffffff !important;
+  border: 1px solid #f0d36c !important;
+  border-radius: 8px !important;
+}
+
+.footle-toast [data-sonner-toast][data-type="success"] {
+  border-left: 4px solid #10b981 !important;
+}
+
+.footle-toast [data-sonner-toast][data-type="error"] {
+  border-left: 4px solid #ef4444 !important;
+}
+
+.footle-toast [data-sonner-toast] [data-title] {
+  color: #f0d36c !important;
+  font-weight: 600 !important;
+}
+
+.footle-toast [data-sonner-toast] [data-description] {
+  color: #ffffff !important;
+  opacity: 0.9 !important;
+}
+
+.footle-toast [data-sonner-toast] [data-close-button] {
+  color: #f0d36c !important;
+}
+
+.footle-toast [data-sonner-toast] [data-close-button]:hover {
+  background: rgba(240, 211, 108, 0.1) !important;
+}

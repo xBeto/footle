@@ -9,6 +9,7 @@ import { ContactForm } from "@/components/ContactForm";
 import EmergencyReset from "@/components/EmergencyReset";
 import "./globals.css";
 import { DailyProvider } from "@/components/DailyProvider";
+import { Toaster } from "@/components/ui/sonner";
 import background from "../../public/background.png";
 
 const myFont = localFont({
@@ -156,6 +157,19 @@ export default function RootLayout({
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2177203441703111"
           strategy="afterInteractive"
           crossOrigin="anonymous"
+        />
+
+        {/* Toast Notifications */}
+        <Toaster 
+          position="top-center"
+          toastOptions={{
+            style: {
+              background: '#111e29',
+              color: '#ffffff',
+              border: '1px solid #f0d36c',
+            },
+            className: 'footle-toast',
+          }}
         />
       </body>
     </html>

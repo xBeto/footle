@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { toast } from "sonner"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import {
@@ -45,6 +46,10 @@ export function ContactForm({ className }: { className?: string }) {
       const result = await response.json()
 
       if (response.ok) {
+        toast.success("Message sent successfully!", {
+          description: "Thank you for your feedback. We'll get back to you soon!",
+          duration: 4000,
+        })
         setSubmitted(true)
         setTimeout(() => setSubmitted(false), 3000)
         setEmail("")
@@ -52,11 +57,17 @@ export function ContactForm({ className }: { className?: string }) {
         setMessage("")
       } else {
         console.error('Error sending email:', result.error)
-        alert('Failed to send message. Please try again.')
+        toast.error("Failed to send message", {
+          description: "Please try again or contact us directly.",
+          duration: 4000,
+        })
       }
     } catch (error) {
       console.error('Error sending email:', error)
-      alert('Failed to send message. Please try again.')
+      toast.error("Failed to send message", {
+        description: "Please check your connection and try again.",
+        duration: 4000,
+      })
     } finally {
       setIsLoading(false)
     }
