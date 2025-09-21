@@ -26,8 +26,8 @@ export async function POST(request: NextRequest) {
 
     // Send email using Resend
     const { data, error } = await resend.emails.send({
-      from: 'Footle Contact <onboarding@resend.dev>', // You'll need to verify your domain
-      to: ['contact@footle.xyz'], // Replace with your actual email
+      from: 'Footle Contact <onboarding@resend.dev>',
+      to: ['footle.xyz@hotmail.com'], // Your verified email for testing
       subject: `Footle Contact: ${type}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -56,13 +56,14 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Resend error:', error);
       return NextResponse.json(
-        { error: 'Failed to send email' },
+        { error: 'Failed to send email', details: error },
         { status: 500 }
       );
     }
 
+    console.log('Email sent successfully:', data);
     return NextResponse.json(
-      { message: 'Email sent successfully', id: data?.id },
+      { message: 'Email sent successfully' },
       { status: 200 }
     );
 
